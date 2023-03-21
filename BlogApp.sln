@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core.cspro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "tests\Test\Test.csproj", "{3B45372C-6643-41C1-98AC-45F90976E964}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9A0242D9-6431-4C78-B336-F7195D88789B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{3B45372C-6643-41C1-98AC-45F90976E964}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B45372C-6643-41C1-98AC-45F90976E964}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B45372C-6643-41C1-98AC-45F90976E964}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A0242D9-6431-4C78-B336-F7195D88789B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A0242D9-6431-4C78-B336-F7195D88789B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A0242D9-6431-4C78-B336-F7195D88789B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A0242D9-6431-4C78-B336-F7195D88789B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{488F189D-956C-40B4-A275-21C72F2D1144} = {A86C9AC7-BE2E-48B5-91A2-A1BB86495D29}
