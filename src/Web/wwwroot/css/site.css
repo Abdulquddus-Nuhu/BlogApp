@@ -1,10 +1,14 @@
-﻿html {
-  font-size: 14px;
+﻿:root {
+/*    --font-size: 18px;*/
+    --spacing: 16px;
+}
+html {
+  font-size: 12px;
 }
 
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
