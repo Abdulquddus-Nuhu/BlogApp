@@ -1,6 +1,7 @@
 using System;
 using Infrastructure.Data;
 using Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,22 @@ builder.Services.AddIdentity<Persona, Role>(
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+builder.Services.AddRazorPages(options =>
+{
+    //options.Conventions.AuthorizePage("/Index");
+    options.Conventions.AuthorizeFolder("/Private");
+    options.Conventions.AllowAnonymousToPage("/Private/PublicPage");
+    options.Conventions.AllowAnonymousToFolder("/Private/PublicPages");
+});
+
+
+builder.Services.ConfigureApplicationCookie(opts =>
+{
+    opts.LoginPath = "/Identity/Account/Login";
+    opts.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    opts.LogoutPath = "/Identity/Account/Logout";
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +61,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
