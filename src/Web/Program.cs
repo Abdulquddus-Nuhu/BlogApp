@@ -4,10 +4,12 @@ using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var dbConnection = Environment.GetEnvironmentVariable("STERLOAN_DB_CONNECTION");
+var dbConnection = Environment.GetEnvironmentVariable("BLOG_APP_DB_CONNECTION");
+
 //Add Application Database
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -39,12 +41,26 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AllowAnonymousToFolder("/Private/PublicPages");
 });
 
+builder.Services.AddAuthentication().AddTwitter(options =>
+{
+    options.ConsumerKey = builder.Configuration["TwitterAPIKey"];
+    options.ConsumerSecret = builder.Configuration["TwitterAPIKeySecret"];
+});
 
 builder.Services.ConfigureApplicationCookie(opts =>
 {
     opts.LoginPath = "/Identity/Account/Login";
     opts.AccessDeniedPath = "/Identity/Account/AccessDenied";
     opts.LogoutPath = "/Identity/Account/Logout";
+});
+
+// Register the worker responsible of seeding the database.
+builder.Services.AddHostedService<DbSeedWorker>();
+
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+    options.HttpsPort = 7288;
 });
 
 var app = builder.Build();

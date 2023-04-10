@@ -32,6 +32,16 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "Quddus": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5116;https://localhost:7288",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "BLOG_APP_DB_CONNECTION": "Host=localhost;Database=BlogApp_db;password=master;username=postgres;"
+      },
+      "dotnetRunMessages": true
     }
   }
 }
