@@ -91,9 +91,9 @@
             <hgroup>
                 <h1>Log in</h1>
             </hgroup>
-            <form>
-                <input asp-for="Input.Email" type="text" name="email" placeholder="Email" aria-label="Login" autocomplete="nickname" required>
-                <input asp-for="Input.Password" type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="current-password" required>
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <input asp-for="Input.Email" type="text" placeholder="Email" aria-label="Login" autocomplete="nickname" required>
+                <input asp-for="Input.Password" type="password" placeholder="Password" aria-label="Password" autocomplete="current-password" required>
                 <fieldset>
                     <label for="remember">
                         <input asp-for="Input.RememberMe" type="checkbox" role="switch" id="remember" name="remember">
@@ -101,25 +101,44 @@
                     </label>
                 </fieldset>
                 <button type="submit">Login</button>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
             </form>
+            <div class="sign-in-form__divider left-right-divider pt-2 pb-3">
+                <p class="sign-in-form__divider-text font-sans text-sm text-color-text px-2">
+                     or 
+                </p>
+            </div>
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) != 0)
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fa-brands fa-twitter mr-2"></i>@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+            <div>
+                <p>
+                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                </p>
+                <p>
+                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                </p>
+                <p>
+                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                </p>
+            </div>
         </div>
     </article>
 </main><!-- ./ Main -->
 
 <style>
     .center-screen {
-        width: 60%;
         display: flex;
         justify-content: center;
         align-items: center;

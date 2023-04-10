@@ -70,7 +70,7 @@
 <!-- Main -->
 <main class="container center-screen">
     <article class="grid">
-        <div class="container">
+        <div>
             <hgroup>
                 <h1>Register</h1>
             </hgroup>
@@ -79,27 +79,38 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <input asp-for="Input.FirstName" type="text" placeholder="Firstname" aria-label="Firstname" autocomplete="Firstname" required>
                     <input asp-for="Input.LastName" type="text" placeholder="Lastname" aria-label="Lastname" autocomplete="Lastname" required>
-                    <input asp-for="Input.Email" type="text" name="email" placeholder="Email" aria-label="Email" autocomplete="Email" required>
-                    <input asp-for="Input.Password" type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="current-password" required>
-                    <input asp-for="Input.ConfirmPassword" type="password" name="password" placeholder="Confirm Password" aria-label="Confirm Password" autocomplete="current-password" required>
+                    <input asp-for="Input.Email" type="text" placeholder="Email" aria-label="Email" autocomplete="Email" required>
+                    <input asp-for="Input.Password" type="password" placeholder="Password" aria-label="Password" autocomplete="current-password" required>
+                    <input asp-for="Input.ConfirmPassword" type="password" placeholder="Confirm Password" aria-label="Confirm Password" autocomplete="current-password" required>
                     <button type="submit">Register</button>
-                    <div>
-                        <p>
-                            OR
-                        </p>
-                        <p>
-                            <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Login</a>
-                        </p>
-                    </div>
                 </div>
             </form>
+            <div class="sign-in-form__divider left-right-divider pt-2 pb-3">
+                <p class="sign-in-form__divider-text font-sans text-sm text-color-text px-2">
+                    or
+                </p>
+            </div>
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) != 0)
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fa-brands fa-twitter mr-2"></i>@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
         </div>
     </article>
 </main><!-- ./ Main -->
 
 <style>
     .center-screen {
-        width: 50%;
         display: flex;
         justify-content: center;
         align-items: center;

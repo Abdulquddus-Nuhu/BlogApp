@@ -1,6 +1,8 @@
 ﻿using System;
 using Core.Entities;
+using Infrastructure.EntityConfigurations;
 using Infrastructure.Identity;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +20,12 @@ namespace Infrastructure.Data
 
         public DbSet<Blog> Blogs { get; set; }
 
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(typeof(BlogEfConfig).Assembly);
+        }
 
         public async Task<bool> TrySaveChangesAsync()
         {
