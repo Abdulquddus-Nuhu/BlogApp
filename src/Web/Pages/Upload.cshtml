@@ -1,0 +1,47 @@
+﻿@page
+@*@model Web.Pages.UploadModel*@
+@model UploadModel
+@{
+    ViewData["Title"] = "Upload";
+    Layout = "_Blog";
+}
+
+
+<main class="container-fluid center-screen">
+    <article class="grid">
+        <div>
+
+            <form enctype="multipart/form-data" method="post">
+                <div asp-validation-summary="All" id="summary" class="text-danger"></div>
+
+                <!-- File browser -->
+                <label asp-for="Input.File">
+                    File browser
+                    <input type="file" asp-for="Input.File" required>
+                </label>
+
+                <!-- Button -->
+                <button type="submit">Submit</button>
+            </form>
+
+        </div>
+    </article>
+</main><!-- ./ Main -->
+
+
+
+
+
+
+<style>
+    #summary {
+        color: red;
+    }
+    .center-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-top: 50px;
+    }
+</style>

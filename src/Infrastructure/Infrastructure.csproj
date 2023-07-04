@@ -10,11 +10,13 @@
     <None Remove="Identity\" />
     <None Remove="Data\" />
     <None Remove="EntityConfigurations\" />
+    <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Identity\" />
     <Folder Include="Data\" />
     <Folder Include="EntityConfigurations\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.4" />
@@ -30,6 +32,8 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.4" />
+    <PackageReference Include="MegaApiClient" Version="1.10.3" />
+    <PackageReference Include="Mailjet.Api" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />

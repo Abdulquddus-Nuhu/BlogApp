@@ -1,8 +1,10 @@
 using System;
 using Infrastructure.Data;
 using Infrastructure.Identity;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Web;
 
@@ -46,6 +48,10 @@ builder.Services.AddAuthentication().AddTwitter(options =>
     options.ConsumerKey = builder.Configuration["TwitterAPIKey"];
     options.ConsumerSecret = builder.Configuration["TwitterAPIKeySecret"];
 });
+
+//Register Email Service
+builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
+builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
 builder.Services.ConfigureApplicationCookie(opts =>
 {
