@@ -14,6 +14,7 @@
             <hgroup>
                 <h1>Log in</h1>
             </hgroup>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
                 <input asp-for="Input.Email" type="text" placeholder="Email" aria-label="Login" autocomplete="nickname" required>
                 <input asp-for="Input.Password" type="password" placeholder="Password" aria-label="Password" autocomplete="current-password" required>
@@ -27,7 +28,7 @@
             </form>
             <div class="sign-in-form__divider left-right-divider pt-2 pb-3">
                 <p class="sign-in-form__divider-text font-sans text-sm text-color-text px-2">
-                     or 
+                    or
                 </p>
             </div>
             @{
