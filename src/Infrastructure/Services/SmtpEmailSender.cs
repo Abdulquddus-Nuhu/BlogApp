@@ -5,6 +5,8 @@ using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
@@ -12,13 +14,16 @@ namespace Infrastructure.Services
 {
     public class SmtpEmailSender : IEmailSender
     {
-        private readonly IOptions<SmtpOptions> _options;
         private readonly UserManager<Persona> _userManager;
+        private readonly ILogger<SmtpEmailSender> _logger;
+        private readonly IConfiguration _configuration;
 
-        public SmtpEmailSender(IOptions<SmtpOptions> options, UserManager<Persona> userManager)
+        public SmtpEmailSender(UserManager<Persona> userManager,
+            ILogger<SmtpEmailSender> logger, IConfiguration configuration)
         {
-            _options = options;
             _userManager = userManager;
+            _logger = logger;
+            _configuration = configuration;
         }
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
@@ -28,8 +33,11 @@ namespace Infrastructure.Services
 
         public async Task Execute(string email, string subject, string htmlMessage)
         {
-            var apiKey = Environment.GetEnvironmentVariable("APIKEY") ?? _options.Value.ApiKey;
-            var secretKey = Environment.GetEnvironmentVariable("SECRETKEY") ?? _options.Value.SecretKey;
+            //var apiKey = Environment.GetEnvironmentVariable("APIKEY") ?? _options.Value.ApiKey;
+            //var secretKey = Environment.GetEnvironmentVariable("SECRETKEY") ?? _options.Value.SecretKey;
+
+            var apiKey = _configuration["Smtp:Username"];
+            var secretKey = _configuration["Smtp:Password"];
             var user = await _userManager.FindByEmailAsync(email);
 
             MailjetClient client = new MailjetClient($"{apiKey}", $"{secretKey}")
@@ -70,7 +78,9 @@ namespace Infrastructure.Services
             },
             }
                 });
-            await client.PostAsync(request);
+
+            _logger.LogInformation("Sending confirmation email to {0}", user.FirstName +" "+ user.LastName);
+             await client.PostAsync(request);
         }
     }
 }

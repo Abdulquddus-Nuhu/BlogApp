@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var dbConnection = Environment.GetEnvironmentVariable("BLOG_APP_DB_CONNECTION");
 
+builder.Services.AddLogging();
+
 //Add Application Database
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -27,7 +29,7 @@ builder.Services.AddIdentity<Persona, Role>(
              options.Password.RequireUppercase = true;
              options.Password.RequiredLength = 8;
              options.User.RequireUniqueEmail = true;
-             options.SignIn.RequireConfirmedEmail = true;
+             options.SignIn.RequireConfirmedEmail = false;
          })
          .AddEntityFrameworkStores<AppDbContext>()
          .AddDefaultTokenProviders();
@@ -50,7 +52,6 @@ builder.Services.AddAuthentication().AddTwitter(options =>
 });
 
 //Register Email Service
-builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
 builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
 builder.Services.ConfigureApplicationCookie(opts =>
