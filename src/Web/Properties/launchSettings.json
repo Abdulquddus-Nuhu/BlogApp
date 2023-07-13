@@ -39,9 +39,7 @@
       "applicationUrl": "http://localhost:5116;https://localhost:7288",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "BLOG_APP_DB_CONNECTION": "Host=localhost;Database=BlogApp_db;password=master;username=postgres;",
-        "APIKEY": "2a137bbcf1bc4d79f7ea151e0bd832b0",
-        "SECRETKEY": "33ab0f63948b7d007aad47d8ae8f0f6f"
+        "BLOG_APP_DB_CONNECTION": "Host=localhost;Database=BlogApp_db;password=master;username=postgres;"
       },
       "dotnetRunMessages": true
     }
