@@ -59,6 +59,7 @@ namespace Web.Pages
                         break;
                 }
 
+                // The position needs to be reset.
                 outStream.Position = 0; 
             }
 
