@@ -1,4 +1,5 @@
 using System;
+using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Services;
@@ -53,6 +54,8 @@ builder.Services.AddAuthentication().AddTwitter(options =>
 
 //Register Email Service
 builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
+
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 
 builder.Services.ConfigureApplicationCookie(opts =>
 {
