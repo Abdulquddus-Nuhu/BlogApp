@@ -9,41 +9,32 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Web;
 
+// Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
-
-var dbConnection = Environment.GetEnvironmentVariable("BLOG_APP_DB_CONNECTION");
-
-builder.Services.AddLogging();
 
 //Add Application Database
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseNpgsql(dbConnection);
+    options.UseNpgsql(Environment.GetEnvironmentVariable("BLOG_APP_DB_CONNECTION"));
 });
 
 builder.Services.AddIdentity<Persona, Role>(
-         options =>
-         {
-             options.Password.RequireDigit = true;
-             options.Password.RequireLowercase = true;
-             options.Password.RequireNonAlphanumeric = true;
-             options.Password.RequireUppercase = true;
-             options.Password.RequiredLength = 8;
-             options.User.RequireUniqueEmail = true;
-             options.SignIn.RequireConfirmedEmail = false;
-         })
-         .AddEntityFrameworkStores<AppDbContext>()
-         .AddDefaultTokenProviders();
-
-// Add services to the container.
-builder.Services.AddRazorPages();
+    options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequiredLength = 8;
+        options.User.RequireUniqueEmail = true;
+        options.SignIn.RequireConfirmedEmail = false;
+    })
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
 
 builder.Services.AddRazorPages(options =>
 {
-    //options.Conventions.AuthorizePage("/Index");
-    options.Conventions.AuthorizeFolder("/Private");
-    options.Conventions.AllowAnonymousToPage("/Private/PublicPage");
-    options.Conventions.AllowAnonymousToFolder("/Private/PublicPages");
+    options.Conventions.AuthorizePage("/Index");
 });
 
 builder.Services.AddAuthentication().AddTwitter(options =>
@@ -52,11 +43,6 @@ builder.Services.AddAuthentication().AddTwitter(options =>
     options.ConsumerSecret = builder.Configuration["TwitterAPIKeySecret"];
 });
 
-//Register Email Service
-builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
-
-builder.Services.AddScoped<IFileUploadService, FileUploadService>();
-
 builder.Services.ConfigureApplicationCookie(opts =>
 {
     opts.LoginPath = "/Identity/Account/Login";
@@ -64,13 +50,34 @@ builder.Services.ConfigureApplicationCookie(opts =>
     opts.LogoutPath = "/Identity/Account/Logout";
 });
 
-// Register the worker responsible of seeding the database.
-builder.Services.AddHostedService<DbSeedWorker>();
-
 builder.Services.AddHttpsRedirection(options =>
 {
     options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
     options.HttpsPort = 7288;
+});
+
+//Register Email Service
+builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
+
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+
+// Register the worker responsible of seeding the database.
+builder.Services.AddHostedService<DbSeedWorker>();
+
+
+//Logging
+builder.Services.AddLogging(x => {
+    x.ClearProviders();
+    x.AddConfiguration(builder.Configuration.GetSection("Logging"));
+    x.AddConsole();
+    x.AddJsonConsole(jsonLog =>
+    {
+        jsonLog.JsonWriterOptions = new System.Text.Json.JsonWriterOptions()
+        {
+            Indented = true,
+        };
+    });
+    
 });
 
 var app = builder.Build();
