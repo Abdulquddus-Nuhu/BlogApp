@@ -17,10 +17,12 @@ namespace Web.Pages
 {
     public class UploadModel : PageModel
     {
+        private readonly ILoggerFactory _factory;
         private readonly IFileUploadService _uploadService;
 
-        public UploadModel(IFileUploadService uploadService)
+        public UploadModel(IFileUploadService uploadService, ILoggerFactory factory)
         {
+            factory.CreateLogger<UploadModel>();
             _uploadService = uploadService;
         }
 
