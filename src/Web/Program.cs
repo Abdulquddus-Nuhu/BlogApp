@@ -34,8 +34,8 @@ builder.Services.AddIdentity<Persona, Role>(
 
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AuthorizePage("/Index");
-});
+    //options.Conventions.AuthorizePage("/Index");
+}).AddRazorRuntimeCompilation();
 
 builder.Services.AddAuthentication().AddTwitter(options =>
 {
